@@ -1,0 +1,45 @@
+<table class="table table-bordered table-striped table-hover" >
+    <thead>
+    <tr>
+    	<th ng-if="selected" width="3%"><input type="checkbox" ng-click="updateSelection($event,'all')"></th>
+        <th ng-repeat="column in columns" width="{{column.width}}">{{column.name}}</th>
+        <th ng-if="operations" width="{{operateWidth}}">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="td in page.list">
+    	<th ng-if="selected" >
+        	<input type="checkbox" cid="{{td.id}}" name="cbname" ng-click="updateSelection($event,td.id)">
+        </th>
+        <td ng-repeat="column in columns">
+        	<div ng-if="column.columnName=='sex'"><p  ng-bind="td[column.columnName] |sex"></p></div>
+        	<div ng-else-if="column.columnName=='status'" ><p ng-bind="td[column.columnName] |personStatus"></p></div>
+        	<div ng-else ><p ng-bind-html="td[column.columnName]"></p></div>
+        </td>
+        <td ng-if="operations">
+        	<div ng-repeat="operation in operations" style="float:left;padding-left:2px;">
+			<!--
+        		<div ng-if="operation.name=='downloadT'"><a type="button"  class="btn btn-default btn-xs" href="{{operation.url}}?id={{td.id}}"><i class="{{operation.imgClass}}" aria-hidden="true"></i> {{operation.title}}</a></div>
+        		<div ng-else><button type="button" class="btn btn-default btn-xs" ng-click="clickOperate(td.id,operation.name)"><i class="{{operation.imgClass}}" aria-hidden="true"></i> {{operation.title}}</button></div>
+        	-->
+				<div ng-if="operation.name=='downloadT'" class="operateButton"><a  href="{{operation.url}}?id={{td.id}}"><i class="{{operation.imgClass}}" aria-hidden="true" title="{{operation.title}}"></i></a></div>
+        		<div ng-else class="operateButton"  class="operateButton"><i class="{{operation.imgClass}}" aria-hidden="true" ng-click="clickOperate(td.id,operation.name)" title="{{operation.title}}"></i></div>
+        	
+			</div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="row">
+	<div class="col-lg-2">
+		<div  ng-if="selected">
+			<button type="button" class="btn btn-default" ng-click="deleteBatch()"><i class="fa fa-times" aria-hidden="true"></i> 批量删除</button><br/>
+		</div>
+	</div>
+	<div class="col-lg-10">
+		<div style="float: right">
+		<uib-pagination ng-change="pageChanged()" previous-text="上一页" next-text="下一页" first-text="首页" last-text="尾页"  total-items="page.totalCount" ng-model="pageOption.currentPage" items-per-page="pageOption.pageSize" max-size="5" class="pagination-sm" boundary-link-numbers="true" rotate="false"></uib-pagination>
+		</div>
+	</div>
+</div>
+
